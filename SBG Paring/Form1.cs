@@ -127,7 +127,7 @@ namespace SBG_Paring
                     listView1.Items.Add(item);
                 }
             }
-            else if(comboBox1.SelectedItem.ToString() == "Parowy" && (p1NameBox.Text.Length > 0 || p1NickBox.Text.Length > 0) && (p2NameBox.Text.Length > 0 || p2NickBox.Text.Length > 0))
+            else if (comboBox1.SelectedItem.ToString() == "Parowy" && (p1NameBox.Text.Length > 0 || p1NickBox.Text.Length > 0) && (p2NameBox.Text.Length > 0 || p2NickBox.Text.Length > 0))
             {
                 Player player1 = new Player(p1NameBox.Text, p1SurnameBox.Text, p1NickBox.Text, p1IdBox.Text, p1RegionBox.Text);
                 player1.team = TeamNameBox.Text;
@@ -239,7 +239,7 @@ namespace SBG_Paring
             checkBox2.Checked = false;
 
             textBox5.Text = Utility.playerList.Count.ToString();
-            textBox6.Text = Utility.teamList.Count.ToString();           
+            textBox6.Text = Utility.teamList.Count.ToString();
         }
 
         //Sortowanie
@@ -447,110 +447,113 @@ namespace SBG_Paring
         //Kliknięcie guzika losującego ponownie
         public void ButtonDraw_click(object sender, EventArgs e)
         {
-            Button buttonClicked = (Button)sender;
-
-            //Sumowanie punktów
-            foreach(var item in Utility.teamList)
+            if ((Utility.teamList.Any(x => x.tempGP == -1 || x.tempVP == -1)))
             {
-                if (item.tempGP == -1|| item.tempVP == -1)
-                {
+                List<Team> blankTeams = new List<Team>();
+                blankTeams = Utility.teamList.Where(x => x.tempGP == -1 || x.tempVP == -1).ToList();
+                foreach (var item in blankTeams)
                     MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
+            }
+            else
+            {
+                Button buttonClicked = (Button)sender;
+
+                //Sumowanie punktów
+                foreach (var item in Utility.teamList)
                 {
                     item.VP += item.tempVP;
                     item.tempVP = -1;
                     item.GP += item.tempGP;
                     item.tempGP = -1;
                 }
-            }
 
-            //Tworzenie nowej bitwy
-            Utility.battleCounter++;
-            Utility.playerCounter = 0;
-            Utility.tableNumber = 1;
+                //Tworzenie nowej bitwy
+                Utility.battleCounter++;
+                Utility.playerCounter = 0;
+                Utility.tableNumber = 1;
 
-            //Create a new TabPage
-            var newTabPage = new TabPage()
-            {
-                Text = "Bitwa " + Utility.battleCounter,
-                Name = "Bitwa " + Utility.battleCounter
-            };
+                //Create a new TabPage
+                var newTabPage = new TabPage()
+                {
+                    Text = "Bitwa " + Utility.battleCounter,
+                    Name = "Bitwa " + Utility.battleCounter
+                };
 
-            //Create a new Button
+                //Create a new Button
 
-            var buttonDraw = new Button()
-            {
-                Text = "Generuj paringi",
-                Left = 1060,
-                Top = 610,
-                Width = 124
-            };
+                var buttonDraw = new Button()
+                {
+                    Text = "Generuj paringi",
+                    Left = 1060,
+                    Top = 610,
+                    Width = 124
+                };
 
-            if (Utility.battleCounter == numericUpDown1.Value)
-            {
-                buttonDraw.Text = "Podsumowanie turnieju";
-                buttonDraw.Click += new EventHandler(ButtonFinish_click);
-            }
-            else
-            {
-                //Assign dynamic handler for the Button's click event
-                buttonDraw.Click += new EventHandler(ButtonDraw_click);
-            }
+                if (Utility.battleCounter == numericUpDown1.Value)
+                {
+                    buttonDraw.Text = "Podsumowanie turnieju";
+                    buttonDraw.Click += new EventHandler(ButtonFinish_click);
+                }
+                else
+                {
+                    //Assign dynamic handler for the Button's click event
+                    buttonDraw.Click += new EventHandler(ButtonDraw_click);
+                }
 
-            //Add the Button to the tab page
-            newTabPage.Controls.Add(buttonDraw);
+                //Add the Button to the tab page
+                newTabPage.Controls.Add(buttonDraw);
 
-            //Create a new Data Grid View
-            newGridView0 = new DataGridView()
-            {
-                Location = new Point(20, 20),
-                Height = 580,
-                Width = 1175
-            };
+                //Create a new Data Grid View
+                newGridView0 = new DataGridView()
+                {
+                    Location = new Point(20, 20),
+                    Height = 580,
+                    Width = 1175
+                };
 
-            newGridView0.CellEndEdit += new DataGridViewCellEventHandler(CellEdit_finished);
+                newGridView0.CellEndEdit += new DataGridViewCellEventHandler(CellEdit_finished);
 
-            var col0 = new DataGridViewTextBoxColumn();
-            var col1 = new DataGridViewTextBoxColumn();
-            var col2 = new DataGridViewTextBoxColumn();
-            var col3 = new DataGridViewTextBoxColumn();
-            var col4 = new DataGridViewTextBoxColumn();
-            var col5 = new DataGridViewTextBoxColumn();
+                var col0 = new DataGridViewTextBoxColumn();
+                var col1 = new DataGridViewTextBoxColumn();
+                var col2 = new DataGridViewTextBoxColumn();
+                var col3 = new DataGridViewTextBoxColumn();
+                var col4 = new DataGridViewTextBoxColumn();
+                var col5 = new DataGridViewTextBoxColumn();
 
-            col0.HeaderText = "Stół";
-            col0.Name = "Column0";
+                col0.HeaderText = "Stół";
+                col0.Name = "Column0";
 
-            col1.HeaderText = "Gracz / Drużyna";
-            col1.Name = "Column1";
+                col1.HeaderText = "Gracz / Drużyna";
+                col1.Name = "Column1";
 
-            col2.HeaderText = "Suma VP";
-            col2.Name = "Column2";
+                col2.HeaderText = "Suma VP";
+                col2.Name = "Column2";
 
-            col3.HeaderText = "Suma GP";
-            col3.Name = "Column3";
+                col3.HeaderText = "Suma GP";
+                col3.Name = "Column3";
 
-            col4.HeaderText = "VP";
-            col4.Name = "Column4";
+                col4.HeaderText = "VP";
+                col4.Name = "Column4";
 
-            col5.HeaderText = "GP";
-            col5.Name = "Column5";
+                col5.HeaderText = "GP";
+                col5.Name = "Column5";
 
-            newGridView0.Columns.AddRange(new DataGridViewColumn[] { col0, col1, col2, col3, col4, col5 });
+                newGridView0.Columns.AddRange(new DataGridViewColumn[] { col0, col1, col2, col3, col4, col5 });
 
-            //Add the DataGridView to the tab page
-            newTabPage.Controls.Add(newGridView0);
+                //Add the DataGridView to the tab page
+                newTabPage.Controls.Add(newGridView0);
 
-            //Add the TabPage to the TabControl
-            tabControl1.TabPages.Add(newTabPage);
+                //Add the TabPage to the TabControl
+                tabControl1.TabPages.Add(newTabPage);
 
-            Utility.Draw();
+                Utility.Draw();
 
-            //Dodawanie graczy z listy
-            foreach (var item in Utility.sortedList)
-            {
-                String[] addRow = { item.table.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
-                newGridView0.Rows.Add(addRow);
+                //Dodawanie graczy z listy
+                foreach (var item in Utility.sortedList)
+                {
+                    String[] addRow = { item.table.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
+                    newGridView0.Rows.Add(addRow);
+                }
             }
 
         }
@@ -560,90 +563,93 @@ namespace SBG_Paring
         {
             int spot = 1;
 
-            //Sumowanie punktów
-            foreach (var item in Utility.teamList)
+            if ((Utility.teamList.Any(x => x.tempGP == -1 || x.tempVP == -1)))
             {
-                if (item.tempGP == -1 || item.tempVP == -1)
-                {
+                List<Team> blankTeams = new List<Team>();
+                blankTeams = Utility.teamList.Where(x => x.tempGP == -1 || x.tempVP == -1).ToList();
+                foreach (var item in blankTeams)
                     MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
+            }
+            else
+            {
+                //Sumowanie punktów
+                foreach (var item in Utility.teamList)
                 {
                     item.VP += item.tempVP;
                     item.tempVP = -1;
                     item.GP += item.tempGP;
                     item.tempGP = -1;
                 }
-            }
 
-            //Tworzenie nowej bitwy
-            Utility.battleCounter++;
+                //Tworzenie nowej bitwy
+                Utility.battleCounter++;
 
-            //Create a new TabPage
-            var newTabPage = new TabPage()
-            {
-                Text = "Podsumowanie turnieju",
-            };
+                //Create a new TabPage
+                var newTabPage = new TabPage()
+                {
+                    Text = "Podsumowanie turnieju",
+                };
 
-            //Create a new Button
+                //Create a new Button
 
-            var buttonSumUp = new Button()
-            {
-                Text = "Generuj Excela",
-                Left = 1060,
-                Top = 610,
-                Width = 124
-            };
+                var buttonSumUp = new Button()
+                {
+                    Text = "Generuj Excela",
+                    Left = 1060,
+                    Top = 610,
+                    Width = 124
+                };
 
-            //Assign dynamic handler for the Button's click event
-            //buttonDraw.Click += new EventHandler(buttonDraw_click);
+                //Assign dynamic handler for the Button's click event
+                //buttonDraw.Click += new EventHandler(buttonDraw_click);
 
-            //Add the Button to the tab page
-            newTabPage.Controls.Add(buttonSumUp);
+                //Add the Button to the tab page
+                newTabPage.Controls.Add(buttonSumUp);
 
-            //Create a new Data Grid View
-            var newGridView0 = new DataGridView()
-            {
-                Location = new Point(20, 20),
-                Height = 580,
-                Width = 1175
-            };
+                //Create a new Data Grid View
+                var newGridView0 = new DataGridView()
+                {
+                    Location = new Point(20, 20),
+                    Height = 580,
+                    Width = 1175
+                };
 
-            var col0 = new DataGridViewTextBoxColumn();
-            var col1 = new DataGridViewTextBoxColumn();
-            var col2 = new DataGridViewTextBoxColumn();
-            var col3 = new DataGridViewTextBoxColumn();
-            var col4 = new DataGridViewTextBoxColumn();
-            var col5 = new DataGridViewTextBoxColumn();
+                var col0 = new DataGridViewTextBoxColumn();
+                var col1 = new DataGridViewTextBoxColumn();
+                var col2 = new DataGridViewTextBoxColumn();
+                var col3 = new DataGridViewTextBoxColumn();
+                var col4 = new DataGridViewTextBoxColumn();
+                var col5 = new DataGridViewTextBoxColumn();
 
-            col0.HeaderText = "Miejsce";
-            col0.Name = "Column0";
+                col0.HeaderText = "Miejsce";
+                col0.Name = "Column0";
 
-            col1.HeaderText = "Gracz / Drużyna";
-            col1.Name = "Column1";
+                col1.HeaderText = "Gracz / Drużyna";
+                col1.Name = "Column1";
 
-            col2.HeaderText = "Suma VP";
-            col2.Name = "Column2";
+                col2.HeaderText = "Suma VP";
+                col2.Name = "Column2";
 
-            col3.HeaderText = "Suma GP";
-            col3.Name = "Column3";
+                col3.HeaderText = "Suma GP";
+                col3.Name = "Column3";
 
-            newGridView0.Columns.AddRange(new DataGridViewColumn[] { col0, col1, col2, col3});
+                newGridView0.Columns.AddRange(new DataGridViewColumn[] { col0, col1, col2, col3 });
 
-            //Add the DataGridView to the tab page
-            newTabPage.Controls.Add(newGridView0);
+                //Add the DataGridView to the tab page
+                newTabPage.Controls.Add(newGridView0);
 
-            //Add the TabPage to the TabControl
-            tabControl1.TabPages.Add(newTabPage);
+                //Add the TabPage to the TabControl
+                tabControl1.TabPages.Add(newTabPage);
 
-            Utility.sortedList = Utility.teamList.OrderByDescending(a => a.VP).ThenByDescending(a => a.GP).ToList();
+                Utility.sortedList = Utility.teamList.OrderByDescending(a => a.VP).ThenByDescending(a => a.GP).ToList();
 
-            //Dodawanie graczy z listy
-            foreach (var item in Utility.sortedList)
-            {
-                String[] addRow = { spot.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
-                newGridView0.Rows.Add(addRow);
-                spot++;
+                //Dodawanie graczy z listy
+                foreach (var item in Utility.sortedList)
+                {
+                    String[] addRow = { spot.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
+                    newGridView0.Rows.Add(addRow);
+                    spot++;
+                }
             }
 
         }
