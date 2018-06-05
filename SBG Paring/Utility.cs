@@ -23,36 +23,11 @@ namespace SBG_Paring
             int opponentNumber = 0;
 
             tableNumber = 1;
-            //Sortowanie listy graczy po VP, potem GP **relikt**
+            //**relikt**
             sortedList = teamList;
 
             //Pierwszy gracz zawsze gra na pierwszym stole
             sortedList[0].table = tableNumber;
-
-            //Tworzenie par
-            for (int i = 0; i < sortedList.Count; i++)
-            {
-                //Sprawdzenie, czy gracz nie ma już pary
-                if (sortedList[i].pastOpponents.Count < battleCounter)
-                {
-                    //Losowanie numeru przeciwnika, dopóki nie będzie unikalny, i dopóki gracz grał z aktualnie rozpatrywanym graczem, lub już ma parę
-                    do
-                    {
-                        opponentNumber = rnd.Next(1, sortedList.Count);
-                    } while (oldOpponentNumbers.Any(x => x != opponentNumber) && (sortedList[opponentNumber].pastOpponents.Any(x => x.name == sortedList[i].name) ||
-                    sortedList[opponentNumber].name == sortedList[i].name || sortedList[opponentNumber].pastOpponents.Count >= battleCounter));
-
-
-                    sortedList[i].table = tableNumber;
-                    sortedList[opponentNumber].table = tableNumber;
-                    //Dodanie przeciwnika do historii
-                    sortedList[i].pastOpponents.Add(sortedList[opponentNumber]);
-                    sortedList[opponentNumber].pastOpponents.Add(sortedList[i]);
-
-                    tableNumber++;
-                    oldOpponentNumbers.Add(opponentNumber);
-                }
-            }
 
             //Sprawdzenie, czy jest nieparzysta ilość graczy, i pauza dla ostatniego możliwego
             if (sortedList.Count % 2 != 0)
@@ -72,6 +47,29 @@ namespace SBG_Paring
                 }
             }
 
+            //Tworzenie par
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                //Sprawdzenie, czy gracz nie ma już pary
+                if (sortedList[i].pastOpponents.Count < battleCounter)
+                {
+                    //Losowanie numeru przeciwnika, dopóki nie będzie unikalny, i dopóki wylosowany gracz nie ma pauzy
+                    do
+                    {
+                        opponentNumber = rnd.Next(1, sortedList.Count);
+                    } while (oldOpponentNumbers.Any(x => x == opponentNumber) || i == opponentNumber || sortedList[opponentNumber].hasPaused == true);
+
+
+                    sortedList[i].table = tableNumber;
+                    sortedList[opponentNumber].table = tableNumber;
+                    //Dodanie przeciwnika do historii
+                    sortedList[i].pastOpponents.Add(sortedList[opponentNumber]);
+                    sortedList[opponentNumber].pastOpponents.Add(sortedList[i]);
+
+                    tableNumber++;
+                    oldOpponentNumbers.Add(opponentNumber);
+                }
+            }
 
             sortedList = sortedList.OrderBy(a => a.table).ThenByDescending(a => a.VP).ToList();
         }
