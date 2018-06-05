@@ -92,6 +92,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.checkBoxFirstRandom = new System.Windows.Forms.CheckBox();
             this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -101,6 +102,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.checkBoxFirstRandom);
             this.tabPage1.Controls.Add(this.acceptButton);
             this.tabPage1.Controls.Add(this.MasterCheckBox);
             this.tabPage1.Controls.Add(this.comboBox1);
@@ -692,6 +694,16 @@
             this.tabControl1.Size = new System.Drawing.Size(1196, 665);
             this.tabControl1.TabIndex = 8;
             // 
+            // checkBoxFirstRandom
+            // 
+            this.checkBoxFirstRandom.AutoSize = true;
+            this.checkBoxFirstRandom.Location = new System.Drawing.Point(907, 615);
+            this.checkBoxFirstRandom.Name = "checkBoxFirstRandom";
+            this.checkBoxFirstRandom.Size = new System.Drawing.Size(138, 17);
+            this.checkBoxFirstRandom.TabIndex = 18;
+            this.checkBoxFirstRandom.Text = "Pierwsze paringi losowe";
+            this.checkBoxFirstRandom.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AcceptButton = this.addPlayer;
@@ -778,6 +790,7 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button acceptButton;
+        private System.Windows.Forms.CheckBox checkBoxFirstRandom;
     }
 }
 

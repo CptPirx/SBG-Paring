@@ -9,7 +9,7 @@ namespace SBG_Paring
     public class Team
     {
         public String name;
-        public int VP = 0, GP = 0, tempVP = 0, tempGP = 0, table;
+        public int VP = 0, GP = 0, tempVP = -1, tempGP = -1, table;
         public bool pauseNow, hasPaused;
 
         public List<Team> pastOpponents = new List<Team>();

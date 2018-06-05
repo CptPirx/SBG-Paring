@@ -399,32 +399,47 @@ namespace SBG_Paring
                 //Add the TabPage to the TabControl
                 tabControl1.TabPages.Add(newTabPage);
 
-                //Dodawanie graczy z listy
-                foreach (var item in Utility.teamList)
+                if (checkBoxFirstRandom.Checked == true)
                 {
-                    Utility.playerCounter++;
-                    if (Utility.playerCounter > Utility.tableNumber * 2)
-                        Utility.tableNumber++;
-                    item.table = Utility.tableNumber;
-                    String[] addRow = { item.table.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
-                    newGridView0.Rows.Add(addRow);                    
-                }
+                    Utility.FirstDraw();
 
-                //Dodanie przeciwników do historii 
-                foreach (var item in Utility.teamList)
-                {
-                    var opponent = Utility.teamList.SingleOrDefault(x => x.table == item.table && item.name != x.name);
-                    if(opponent != null)
-                        item.pastOpponents.Add(opponent);
+                    //Dodawanie graczy z listy
+                    foreach (var item in Utility.sortedList)
+                    {
+                        String[] addRow = { item.table.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
+                        newGridView0.Rows.Add(addRow);
+                    }
                 }
-
-                //Dodawanie pauzy
-                if (Utility.teamList.Count % 2 != 0)
+                else
                 {
-                    var lastTeam = Utility.teamList.LastOrDefault();
-                    var fakeOpponent = new Team("0987");
-                    lastTeam.hasPaused = true;
-                    lastTeam.pastOpponents.Add(fakeOpponent);
+
+                    //Dodawanie graczy z listy
+                    foreach (var item in Utility.teamList)
+                    {
+                        Utility.playerCounter++;
+                        if (Utility.playerCounter > Utility.tableNumber * 2)
+                            Utility.tableNumber++;
+                        item.table = Utility.tableNumber;
+                        String[] addRow = { item.table.ToString(), item.name, item.VP.ToString(), item.GP.ToString() };
+                        newGridView0.Rows.Add(addRow);
+                    }
+
+                    //Dodanie przeciwników do historii 
+                    foreach (var item in Utility.teamList)
+                    {
+                        var opponent = Utility.teamList.SingleOrDefault(x => x.table == item.table && item.name != x.name);
+                        if (opponent != null)
+                            item.pastOpponents.Add(opponent);
+                    }
+
+                    //Dodawanie pauzy
+                    if (Utility.teamList.Count % 2 != 0)
+                    {
+                        var lastTeam = Utility.teamList.LastOrDefault();
+                        var fakeOpponent = new Team("0987");
+                        lastTeam.hasPaused = true;
+                        lastTeam.pastOpponents.Add(fakeOpponent);
+                    }
                 }
             }
         }
@@ -437,10 +452,17 @@ namespace SBG_Paring
             //Sumowanie punktów
             foreach(var item in Utility.teamList)
             {
-                item.VP += item.tempVP;
-                item.tempVP = 0;
-                item.GP += item.tempGP;
-                item.tempGP = 0;
+                if (item.tempGP == -1|| item.tempVP == -1)
+                {
+                    MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    item.VP += item.tempVP;
+                    item.tempVP = -1;
+                    item.GP += item.tempGP;
+                    item.tempGP = -1;
+                }
             }
 
             //Tworzenie nowej bitwy
@@ -541,10 +563,17 @@ namespace SBG_Paring
             //Sumowanie punktów
             foreach (var item in Utility.teamList)
             {
-                item.VP += item.tempVP;
-                item.tempVP = 0;
-                item.GP += item.tempGP;
-                item.tempGP = 0;
+                if (item.tempGP == -1 || item.tempVP == -1)
+                {
+                    MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    item.VP += item.tempVP;
+                    item.tempVP = -1;
+                    item.GP += item.tempGP;
+                    item.tempGP = -1;
+                }
             }
 
             //Tworzenie nowej bitwy
@@ -624,18 +653,29 @@ namespace SBG_Paring
         {
             //foreach (var item in Utility.teamList)
             //{
+            try
+            {
                 string value = newGridView0.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 string teamName = newGridView0.Rows[e.RowIndex].Cells[1].Value.ToString();
 
                 if (e.ColumnIndex == 4)
                 {
-                    Utility.teamList.SingleOrDefault(x => x.name == teamName).tempVP = Convert.ToInt32(value);                    
+                    Utility.teamList.SingleOrDefault(x => x.name == teamName).tempVP = Convert.ToInt32(value);
                 }
-                else if(e.ColumnIndex == 5)
+                else if (e.ColumnIndex == 5)
                 {
                     Utility.teamList.SingleOrDefault(x => x.name == teamName).tempGP = Convert.ToInt32(value);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue");
+                Console.ReadLine();
+            }
             //}
+
         }
 
         //Zmiana ilości gier na turnieju
