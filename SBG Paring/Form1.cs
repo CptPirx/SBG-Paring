@@ -399,6 +399,7 @@ namespace SBG_Paring
                 //Add the TabPage to the TabControl
                 tabControl1.TabPages.Add(newTabPage);
 
+                //Jeżeli pierwsze paringi mają być losowe
                 if (checkBoxFirstRandom.Checked == true)
                 {
                     Utility.FirstDraw();
@@ -696,10 +697,8 @@ namespace SBG_Paring
         //Dodawanie graczy z bazy danych
         private void addFromDbButton_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.ShowDialog();
-
-            
+            Form2 form2 = new Form2(this);
+            form2.Show();         
         }
     }
 }
