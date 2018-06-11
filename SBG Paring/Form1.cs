@@ -692,5 +692,14 @@ namespace SBG_Paring
             else
                 acceptButton.Enabled = false;
         }
+
+        //Dodawanie graczy z bazy danych
+        private void addFromDbButton_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.ShowDialog();
+
+            
+        }
     }
 }
