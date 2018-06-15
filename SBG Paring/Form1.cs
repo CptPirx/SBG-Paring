@@ -101,6 +101,7 @@ namespace SBG_Paring
             }
         }
 
+        //Dodawanie gracza
         private void AddPlayer_Click(object sender, EventArgs e)
         {
             if (comboBox1.SelectedItem.ToString() == "Solowy" && (p1NameBox.Text.Length > 0 || p1NickBox.Text.Length > 0))
@@ -269,7 +270,7 @@ namespace SBG_Paring
             this.listView1.Sort();
         }
 
-        //Usuwanie
+        //Usuwanie gracza
         private void ListView1_KeyDown(object sender, KeyEventArgs e)
         {
             if (Keys.Delete == e.KeyCode)
@@ -378,6 +379,7 @@ namespace SBG_Paring
 
                 col1.HeaderText = "Gracz / Drużyna";
                 col1.Name = "Column1";
+                col1.Width = 120;
 
                 col2.HeaderText = "Suma VP";
                 col2.Name = "Column2";
@@ -453,7 +455,7 @@ namespace SBG_Paring
                 List<Team> blankTeams = new List<Team>();
                 blankTeams = Utility.teamList.Where(x => x.tempGP == -1 || x.tempVP == -1).ToList();
                 foreach (var item in blankTeams)
-                    MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(item.name + " posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -526,6 +528,7 @@ namespace SBG_Paring
 
                 col1.HeaderText = "Gracz / Drużyna";
                 col1.Name = "Column1";
+                col1.Width = 120;
 
                 col2.HeaderText = "Suma VP";
                 col2.Name = "Column2";
@@ -569,7 +572,7 @@ namespace SBG_Paring
                 List<Team> blankTeams = new List<Team>();
                 blankTeams = Utility.teamList.Where(x => x.tempGP == -1 || x.tempVP == -1).ToList();
                 foreach (var item in blankTeams)
-                    MessageBox.Show(item.name + "posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(item.name + " posiada nieuzupełnione wartości GP i VP!", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -627,6 +630,7 @@ namespace SBG_Paring
 
                 col1.HeaderText = "Gracz / Drużyna";
                 col1.Name = "Column1";
+                col1.Width = 120;
 
                 col2.HeaderText = "Suma VP";
                 col2.Name = "Column2";

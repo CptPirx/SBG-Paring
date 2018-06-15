@@ -13,18 +13,21 @@ namespace SBG_Paring
         public static List<Team> sortedList = new List<Team>();
         public static List<int> oldOpponentNumbers = new List<int>();
 
+        public static Random rnd = new Random();
+
         public static int battleCounter = 0;
         public static int playerCounter = 0;
         public static int tableNumber = 1;
 
+        //Pierwsze losowanie paringów
         public static void FirstDraw()
         {
-            Random rnd = new Random();
             int opponentNumber = 0;
 
             tableNumber = 1;
-            //**relikt**
+            //Losowe sortowanie listy
             sortedList = teamList;
+            Shuffle(sortedList);
 
             //Pierwszy gracz zawsze gra na pierwszym stole
             sortedList[0].table = tableNumber;
@@ -74,6 +77,7 @@ namespace SBG_Paring
             sortedList = sortedList.OrderBy(a => a.table).ThenByDescending(a => a.VP).ToList();
         }
 
+        //Kolejne losowania paringów
         public static void Draw()
         {
             tableNumber = 1;
@@ -134,6 +138,7 @@ namespace SBG_Paring
             sortedList = sortedList.OrderBy(a => a.table).ThenByDescending(a => a.VP).ToList();
         }
 
+        //Wyczyść dane
         public static void ClearData()
         {
             //Czyszczenie przeciwników
@@ -150,6 +155,20 @@ namespace SBG_Paring
             battleCounter = 0;
             playerCounter = 0;
             tableNumber = 1;
+        }
+
+        //Losowe ułożenie listy
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rnd.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
 
     }

@@ -123,7 +123,7 @@
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1188, 639);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Informacje o turnieju";
@@ -275,6 +275,7 @@
             // PTeam
             // 
             this.PTeam.Text = "Drużyna";
+            this.PTeam.Width = 120;
             // 
             // panel1
             // 
@@ -320,8 +321,8 @@
             // 
             // addFromDbButton
             // 
-            this.addFromDbButton.Location = new System.Drawing.Point(343, 488);
-            this.addFromDbButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.addFromDbButton.Location = new System.Drawing.Point(14, 513);
+            this.addFromDbButton.Margin = new System.Windows.Forms.Padding(2);
             this.addFromDbButton.Name = "addFromDbButton";
             this.addFromDbButton.Size = new System.Drawing.Size(124, 21);
             this.addFromDbButton.TabIndex = 34;
@@ -797,14 +798,14 @@
         private System.Windows.Forms.ColumnHeader PID;
         private System.Windows.Forms.ColumnHeader PRegion;
         private System.Windows.Forms.ColumnHeader PTeam;
-        private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button acceptButton;
         private System.Windows.Forms.CheckBox checkBoxFirstRandom;
         private System.Windows.Forms.Button addFromDbButton;
         internal System.Windows.Forms.ListView listView1;
+        internal System.Windows.Forms.TextBox textBox5;
+        internal System.Windows.Forms.TextBox textBox6;
     }
 }
 
